@@ -135,6 +135,7 @@ workBtnContainer.addEventListener('click',(e) =>{
 
 })
 
+//navbar위치대로 
 const sectionIds =[
     '#home',
     '#about',
@@ -144,7 +145,7 @@ const sectionIds =[
     '#contact'
 ]
 
-const sections = sectionIds.map((id) => document.querySelector(id));   //안에있는것 콜백으로 하나씩 실행하는 것 
+const sections = sectionIds.map((id) => document.querySelector(id)); //안에있는것 콜백으로 하나씩 실행하는 것 
 // console.log(sections)
 const navItems = sectionIds.map((id) => document.querySelector(`[data-link="${id}"]`));
 // console.log(navItems);
