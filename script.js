@@ -30,9 +30,25 @@ navbarMenu.addEventListener('click', (e) =>{
     if(link == null){
         return;
     }
-    scrollIntoView(link);
+    navbarMenu.classList.remove('open');
+    scrollIntoView(link); 
+    
+    // 메뉴바 눌렀을때 테두리 표시 //내가짠 코드
+    // const navActive = document.querySelector('.navbar__menu__item.active')
+    // if(navActive == null){
+    //     target.classList.add('active')
+    //     return;
+    // }
+    // navActive.classList.remove('active')
+    // target.classList.add('active')
 })
 
+
+//모바일 메뉴 버튼 설정
+const navbarToggleBtn = document.querySelector('.navbar__toggle-btn');
+navbarToggleBtn.addEventListener('click', ()=>{
+    navbarMenu.classList.toggle('open');
+})
 
 // 연락주세요 버튼 스크롤가기! -- 하나뿐일때는 바로!
 const homeContactBtn = document.querySelector('.home__contact')
@@ -41,11 +57,6 @@ homeContactBtn.addEventListener('click', ()=>{
 })
 
 // 위로 화살표 안보이다보이게+ 스크롤 맨위로    
-const arrowUpBtn= document.querySelector('.arrow-up');
-arrowUpBtn.addEventListener('click', ()=>{
-    scrollIntoView('#home')
-});
-
 const home =document.querySelector('.home__container');
 const homeHeight = home.getBoundingClientRect().height;
 
@@ -56,7 +67,127 @@ document.addEventListener('scroll',() =>{
     }else{
         arrowup.classList.remove('visible')
     }
-    home.style.opacity = 1-window.scollY/homeHeight;
+    home.style.opacity = 1 - window.scollY / homeHeight;
 })
 
 
+const arrowUp= document.querySelector('.arrow-up');
+arrowUp.addEventListener('click', ()=>{
+    scrollIntoView('#home')
+});
+
+
+/* 나의 연습코드
+// work > project 버튼 누를때 보이게 하는것!?
+const categoryBtn = document.querySelector('.work__categories');
+const projectDetail = document.querySelectorAll('.project__description')
+const project = document.querySelectorAll('.project')
+console.log(projectDetail)
+categoryBtn.addEventListener('click', (e) =>{
+    const filter = e.target.dataset.filter;
+    if(filter == null){
+        return; 
+    }
+    if(filter == '*'){
+        for(let i=0; i<project.length; i++){
+                projectDetail[i].classList.add('visible')
+        }
+    }
+    for(let i=0; i<project.length; i++){
+        if(project[i].dataset.type == filter){
+            projectDetail[i].classList.add('visible')
+        }else{
+            projectDetail[i].classList.remove('visible')
+            project[i].classList.add('none')           
+        }
+    }
+})
+
+*/
+
+const workBtnContainer = document.querySelector('.work__categories');
+const projectContainer = document.querySelector('.work__projects');
+const projects = document.querySelectorAll('.project');
+
+workBtnContainer.addEventListener('click',(e) =>{
+    const filter = e.target.dataset.filter || e.target.parentNode.dataset.filter;
+    if(filter == null){
+        return;
+    }
+    const active = document.querySelector('.category__btn.selected');
+    if(active != null){
+        active.classList.remove('selected')
+    }
+    e.target.classList.add('selected');
+
+    projectContainer.classList.add('anim-out');
+    setTimeout(() =>{
+        projects.forEach((project)=>{
+            // console.log(project.dataset.type);
+            if(filter === '*' || filter === project.dataset.type){
+                project.classList.remove('invisible')
+            }else{
+                project.classList.add('invisible')
+            }
+        })
+        projectContainer.classList.remove('anim-out')
+    },300)
+
+})
+
+const sectionIds =[
+    '#home',
+    '#about',
+    '#skills',
+    '#work',
+    '#testimonials',
+    '#contact'
+]
+
+const sections = sectionIds.map((id) => document.querySelector(id));   //안에있는것 콜백으로 하나씩 실행하는 것 
+// console.log(sections)
+const navItems = sectionIds.map((id) => document.querySelector(`[data-link="${id}"]`));
+// console.log(navItems);
+let selectedNavIndex = 0;
+let selectedNavItem = navItems[0];
+
+function selectNavItem(selected){
+    selectedNavItem.classList.remove('active');
+    selectedNavItem = selected;
+    selectedNavItem.classList.add('active');
+}
+
+const observerOptions = {
+    root: null, rootMargin: '0px', threshold: 0.3
+}
+
+const observerCallback = (entries, observer) =>{
+    entries.forEach((entry) => {
+        if(!entry.isIntersecting && entry.intersectionRatio >0){
+            console.log('y');
+            const index = sectionIds.indexOf(`#${entry.target.id}`);
+            console.log(index);
+            if(entry.boundingClientRect.y<0){
+                selectedNavIndex =index +  1;
+            }else{
+                selectedNavIndex = index -1;
+            }
+        }
+    })
+}
+
+
+
+const observer = new IntersectionObserver(observerCallback, observerOptions);
+sections.forEach((section) => observer.observe(section));
+
+window.addEventListener('wheel', () =>{
+    if(window.scrollY === 0){
+        selectedNavIndex =0;
+    }else if(
+        window.scrollY + window.innerHeight === document.body.clientHeight
+    ){
+        selectedNavIndex = navItems.length -1;
+    }
+    selectNavItem(navItems[selectedNavIndex])
+});

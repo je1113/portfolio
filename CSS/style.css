@@ -101,12 +101,15 @@ p{
 
 .navbar__menu{ /*ul li도 flex가능*/
     display: flex;
+    margin: 0;
 }
 .navbar__menu__item{
     padding: 8px 12px;
     margin:0 4px;
     color: var(--color-white);
     cursor: pointer;
+    border: 1px solid transparent;  
+    border-radius: var(--size-border-radius);
 }
 
 .navbar__menu__item.active{
@@ -115,6 +118,7 @@ p{
 }
 
 .navbar__menu__item:hover{/*가상선택자:*/
+    border-color: var(--color-white);
     background-color: var(--color-background-dark);
     border-radius: var(--size-border-radius)
 }
@@ -133,6 +137,7 @@ p{
     background: url(../images/background.png) center/cover no-repeat;
     padding:40px;
     text-align: center;
+    padding-top: 100px;
 }
 
 .home__avatar{
@@ -152,6 +157,9 @@ p{
     padding: 8px 12px;
     border: 2px solid var(--color-white);
     border-radius: var(--size-border-radius);
+}
+.home__contact:hover{
+    background-color: var(--color-background-brown);
 }
 
 .section{
@@ -344,6 +352,14 @@ p{
     flex-wrap: wrap;
     justify-content: center;
 }
+
+.work__projects.anim-out{
+    opacity: 0;
+    transform: scale(0.96) translateY(40px);
+}
+.project.invisible{
+    display:none;
+}
 .project{
     position: relative;
     display: flex;
@@ -470,7 +486,7 @@ p{
         opacity:0; pointer-events:none;
         
 }
-.arrow-up.visible{
+.arrow-up.visible   {
     opacity:1; pointer-events:auto;
 }
 
@@ -487,6 +503,9 @@ p{
         text-align: center;
         width: 100%;
         display:none;
+    }
+    .navbar__menu.open{
+        display:block
     }
     .about__majors{
         flex-direction: column; 
