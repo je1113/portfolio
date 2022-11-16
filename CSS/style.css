@@ -314,7 +314,7 @@ p{
 .work__categories{
     margin:40px;
 }
-
+    
 .category__btn{
     border-radius: var(--size-border-radius);
     font-size: var(--font-regular);
