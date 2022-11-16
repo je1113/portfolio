@@ -78,11 +78,20 @@ p{
 
 /* Navbar */
 #navbar{
+    position: fixed;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 16px;
     background-color: var(--color-grey);
+    z-index: 1;
+    transition: all var(--animation-duration) ease-in-out;
+}
+
+#navbar.navbar--bold{   /* 점수를 더 높게 하기 위해! */
+    background-color: var(--color-background-brown);
+    padding: 10px;
 }
 .navbar__logo{
     font-size: var(--font-medium);
@@ -453,6 +462,16 @@ p{
 .contact__links i:hover{
     transform: scals(1.1);
     color: var(--color-grey)
+}
+
+.arrow-up{position: fixed; right: 50px; bottom: 50px; background-color: var(--color-background) ; border-radius: 50%;
+        width:70px; height:70px; font-size: 50px; color:var(--color-white);
+        transition: opacity 300ms ease-in;
+        opacity:0; pointer-events:none;
+        
+}
+.arrow-up.visible{
+    opacity:1; pointer-events:auto;
 }
 
 @media screen and (max-width: 768px){
